@@ -21,11 +21,13 @@ Content:
     Kafka brokers handle the storage layer of Kafka. This features a log based event storage. While, KafkaConnect handles the integration of other systems into Kafka. For example, KafkaConnect can ingest an entire database.
 
 
-2. Kafka Clients
+2. [Kafka Clients]((http://kafka.apache.org/documentation/#gettingStarted))
 
     Kafka is primarily about events which are ordered in topics. Topics are analogical to folders in filesystems. Clients read and write to Kafka servers through producers and consumers. The producers append (write) events to the log file operated by kafka brokers and the consumers subscribed read the events. 
 
-    It is worth mentioning that even though Kafka implements the publish/subscription system found in message queues or brokers like RabbitMQ or ActiveMQ, it is not limited to that. Kafka can store messages, track events, process events and even analyse them. These are not common features of traditional queueing systems which focus solely on writing and reading stream of messages from a broker. Their storage is usually in-memory and messages are deleted once consumed. Therefore, Kafka's alternative would be Amazon Kinesis among other full stream processing platforms. 
+    It is worth mentioning that even though Kafka implements the publish/subscription system found in message queues or brokers like [RabbitMQ](https://www.rabbitmq.com/) or [ActiveMQ](https://activemq.apache.org/), it is not limited to that. Kafka can store messages, track events, process events and even analyse them. These are not common features of traditional queueing systems which focus solely on writing and reading stream of messages from a broker. 
+    
+Message queues usually have in-memory storage and messages are deleted once they are consumed. Therefore, Kafka's alternative would be Amazon Kinesis among other full stream processing platforms. 
 
 
 ### Installation and Kafka server stat up<a id="install_kafka"></a>
