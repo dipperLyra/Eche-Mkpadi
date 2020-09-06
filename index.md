@@ -1,13 +1,12 @@
 ## Setting up Kafka and Springboot Kafka Client
 
 Content:
-- [what is kafka](#what_is_kafka)
-- [key concepts: kafka server and client(producer and consumer model)](#key_concepts)
-- [installing kafka](#install_kafka)
-- run kafka
-- setting kafka clients with springboot. 
-- run the project
-- conclusion
+- [What is kafka](#what_is_kafka)
+- [Key concepts: kafka server and client(producer and consumer model)](#key_concepts)
+- [Installing kafka](#install_kafka)
+- [Setting up kafka clients with springboot](#client_setup) 
+- [Run the project](#run_project)
+- [Conclusion](#conclusion)
 
 ### What is Kafka?<a id="what_is_kafka"></a>
 
@@ -46,13 +45,13 @@ Content:
     $ bin/zookeeper-server-start.sh config/zookeeper.properties
     ```
 
-4. Run Kafka server
+4. Run Kafka server on another terminal
 
     ```bash
     $ bin/kafka-server-start.sh config/server.properties
     ```
 
-### Setting up Kafka clients with Springboot
+### Setting up Kafka clients with Springboot<a id="client_setup"></a>
 
 1. Generate a Spring application from [here](https://start.spring.io/)
 
@@ -144,7 +143,7 @@ Content:
       spring.kafka.consumer.group-id=matukio
     ```
     
-4. Create producer and consumer clients
+4. Create producer client
 
     Producer.java
     
@@ -175,69 +174,79 @@ Content:
                 logger.info("vvv::  send message");
                 kafkaTemplate.send(TOPIC, message);
             }
-        }```
+        }
+     ```
+ 
+5. Create consumer client 
         
-        Consumer.java
+   Consumer.java
         
-        ```java
-            package com.matukio.mtihani.service;
+    ```java
+        package com.matukio.mtihani.service;
 
-            import com.fasterxml.jackson.databind.ObjectMapper;
-            import org.slf4j.Logger;
-            import org.slf4j.LoggerFactory;
-            import org.springframework.beans.factory.annotation.Autowired;
-            import org.springframework.kafka.annotation.KafkaListener;
-            import org.springframework.stereotype.Service;
+        import com.fasterxml.jackson.databind.ObjectMapper;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.kafka.annotation.KafkaListener;
+        import org.springframework.stereotype.Service;
 
-            import java.io.IOException;
+        import java.io.IOException;
 
-            @Service
-            public class Consumer {
+        @Service
+        public class Consumer {
 
-                private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
-
-                @Autowired
-                private final ObjectMapper mapper = new ObjectMapper();
-
-                @KafkaListener(topics = "demo", groupId = "matukio")
-                public void consume(String message) throws IOException {
-                    logger.info("consumed message is= " + message);
-                }
-            }```
-        
-        MessagingController.java
-        
-        ```java
-            package com.matukio.mtihani.controller;
-
-            import com.matukio.mtihani.service.Producer;
-            import org.springframework.beans.factory.annotation.Autowired;
-            import org.springframework.web.bind.annotation.PostMapping;
-            import org.springframework.web.bind.annotation.RequestMapping;
-            import org.springframework.web.bind.annotation.RequestParam;
-            import org.springframework.web.bind.annotation.RestController;
-
-            @RestController
-            @RequestMapping("/messaging")
-            public class MessagingController {
-
-            private final Producer producer;
+            private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
             @Autowired
-            MessagingController(Producer producer) {
-                this.producer = producer;
-            }
+            private final ObjectMapper mapper = new ObjectMapper();
 
-            @PostMapping(value = "/publish")
-            public void sendMessageToKafkaTopic(@RequestParam("message") String message) {
-                this.producer.sendMessage(message);
+            @KafkaListener(topics = "demo", groupId = "matukio")
+            public void consume(String message) throws IOException {
+                logger.info("consumed message is= " + message);
             }
-        }```
+        }
+     ```
+
+6. Create a controller
+
+   MessagingController.java
         
-### Run the application
+   ```java
+        
+    package com.matukio.mtihani.controller;
+
+    import com.matukio.mtihani.service.Producer;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RequestParam;
+    import org.springframework.web.bind.annotation.RestController;
+
+    @RestController
+    @RequestMapping("/messaging")
+    public class MessagingController {
+
+    private final Producer producer;
+
+    @Autowired
+    MessagingController(Producer producer) {
+        this.producer = producer;
+    }
+
+    @PostMapping(value = "/publish")
+    public void sendMessageToKafkaTopic(@RequestParam("message") String message) {
+        this.producer.sendMessage(message);
+    }
+    }
+    ```
+        
+### Run the application<a id="run_project"></a>
+
 ` mvn exec:java -Dexec.mainClass=com.matukio.mtihani.MtihaniApplication`
         
-### Conclusion        
+### Conclusion<a id="conclusion"></a>  
+
 This post assumes that you have decided to use the SOA for your application. It does not attempt to argue whether that is the better architecture or not. 
 
 But a quick check could be to answer the following questions below:
@@ -246,12 +255,9 @@ But a quick check could be to answer the following questions below:
 2. Do I process enough data that necessitates that I partition and replicate my database?
 3. Do I necessarily need to break and deploy my application as separate pieces. 
 
-If your answer is yes these questions, then, you might use an SOA. Otherwise, I think the monolith approach will save you a lot of time. 
+If your answer is yes these questions, then, you might want to use an SOA. Otherwise, I think the monolith approach will save you a lot of time. 
 
-This is basic set up and it is not ideal. The goal is to introduce the reader to kafka and how to set up kafka clients on springboot.
+This is a basic set up and it is not ideal. The goal is to introduce the reader to kafka and how to set up kafka clients on springboot.
 
 In this set up the producer and consumer live in the same project whereas in real applications the producer and consumer would usually be in different microservices located in different machines.
-
-
-
 
