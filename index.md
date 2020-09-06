@@ -1,19 +1,19 @@
 ## Setting up Kafka and Springboot Kafka Client
 
-draft
-- what is kafka
-- key concepts: explain kafka broker, producer and consumer model
-- installing kafka
+Content:
+- [what is kafka](#what_is_kafka)
+- [key concepts: kafka server and client(producer and consumer model)](#key_concepts)
+- [installing kafka](#install_kafka)
 - run kafka
 - setting kafka clients with springboot. 
 - run the project
 - conclusion
 
-### What is Kafka?
+### What is Kafka?<a id="what_is_kafka"></a>
 
 [Kafka](http://kafka.apache.org/) is an event streaming platform. This means that in SOA where events from one microservice has to be communicated to another microservice (or other microservices) we can use Kafka to send (stream) these events (messages), analyse them and even log them (store them permanently). Kafka streams these events which means that it captures data in real-time, a continuous flow of data. 
 
-### Key Concepts in Kafka
+### Key Concepts in Kafka<a id="key_concepts"></a>
 
 1. [Kafka servers](http://kafka.apache.org/documentation/#gettingStarted)
 
@@ -29,7 +29,7 @@ draft
     It is worth mentioning that even though Kafka implements the publish/subscription system found in message queues or brokers like RabbitMQ or ActiveMQ, it is not limited to that. Kafka can store messages, track events, process events and even analyse them. These are not common features of traditional queueing systems which focus solely on writing and reading stream of messages from a broker. Their storage is usually in-memory and messages are deleted once consumed. Therefore, Kafka's alternative would be Amazon Kinesis among other full stream processing platforms. 
 
 
-### Installation and Kafka server stat up
+### Installation and Kafka server stat up<a id="install_kafka"></a>
 
 1. Download Kafka [here](https://downloads.apache.org/kafka/2.6.0/kafka_2.13-2.6.0.tgz) 
 
