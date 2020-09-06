@@ -1,5 +1,6 @@
 ## Setting up Kafka and Springboot Kafka Client
 
+
 Content:
 - [What is kafka](#what_is_kafka)
 - [Key concepts: kafka server and client(producer and consumer model)](#key_concepts)
@@ -8,11 +9,15 @@ Content:
 - [Run the project](#run_project)
 - [Conclusion](#conclusion)
 
+
 ### What is Kafka?<a id="what_is_kafka"></a>
+
 
 [Kafka](http://kafka.apache.org/) is an event streaming platform. This means that in SOA where events from one microservice has to be communicated to another microservice (or other microservices) we can use Kafka to send (stream) these events (messages), analyse them and even log them (store them permanently). Kafka streams these events which means that it captures data in real-time, a continuous flow of data. 
 
+
 ### Key Concepts in Kafka<a id="key_concepts"></a>
+
 
 1. [Kafka servers](http://kafka.apache.org/documentation/#gettingStarted)
 
@@ -31,6 +36,7 @@ Message queues usually have in-memory storage and messages are deleted once they
 
 
 ### Installation and Kafka server stat up<a id="install_kafka"></a>
+
 
 1. Download Kafka [here](https://downloads.apache.org/kafka/2.6.0/kafka_2.13-2.6.0.tgz) 
 
@@ -53,7 +59,9 @@ Message queues usually have in-memory storage and messages are deleted once they
     $ bin/kafka-server-start.sh config/server.properties
     ```
 
+
 ### Setting up Kafka clients with Springboot<a id="client_setup"></a>
+
 
 1. Generate a Spring application from [here](https://start.spring.io/)
 
@@ -243,13 +251,20 @@ Message queues usually have in-memory storage and messages are deleted once they
     }
     ```
         
+        
 ### Run the application<a id="run_project"></a>
 
+
 ` mvn exec:java -Dexec.mainClass=com.matukio.mtihani.MtihaniApplication`
+
+Using curl or any other tool make a request with "message" in the body. Then, check terminal where MtihaniApplication is running for the output.
+
+        
         
 ### Conclusion<a id="conclusion"></a>  
 
-This post assumes that you have decided to use the SOA for your application. It does not attempt to argue whether that is the better architecture or not. 
+
+This post assumes that you have decided to use the SOA (Service Oriented Architecture or popularly known as microservices) for your application. It does not attempt to argue whether that is the better architecture or not. 
 
 But a quick check could be to answer the following questions below:
 
