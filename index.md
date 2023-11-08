@@ -1,280 +1,170 @@
-## Setting up Kafka and Springboot Kafka Client
+# Summary of a Networking Date
 
+For many, a good weekend means: rest, some adventure and family time. My adventure over the weekend was some naive chat system using Netcat (nc) and ssh. Netcat is a popular unix network tool. It is commonly used for port scanning.
 
-Content:
-- [What is kafka](#what_is_kafka)
-- [Key concepts: kafka server and client(producer and consumer model)](#key_concepts)
-- [Installing kafka](#install_kafka)
-- [Setting up kafka clients with springboot](#client_setup) 
-- [Run the project](#run_project)
-- [Conclusion](#conclusion)
+The goal was to set up a naive communication tunnel between two computers.
 
+Note: this was tested only on MacBooks, macOS. Linux operating systems come with Netcat but the flags might be slightly different. I do not know if Windows come with Netcat but it is contained [cygwin](https://cygwin.com/index.html), provides core *nix packages on Windows. Booting into Ubuntu on WSL should also make it available. Windows users can recreate this on their platform however they see fit.
 
-### What is Kafka?<a id="what_is_kafka"></a>
+## Netcat
 
+According to macOS manual page, Netcat, nc - arbitrary TCP and UDP connections and listens. This means that `nc` can set up a TCP or UDP connection or listen for a connection on a port. I am interested in a TCP port.
 
-[Kafka](http://kafka.apache.org/) is an event streaming platform. This means that in SOA where events from one microservice has to be communicated to another microservice (or other microservices) we can use Kafka to send (stream) these events (messages), analyse them and even log them (store them permanently). Kafka streams these events which means that it captures data in real-time, a continuous flow of data. 
+### Setting up a TCP connection using Netcat
 
+Open the terminal and enter this command: `nc -l <port>` \<port\> can be replaced with any port.
 
-### Key Concepts in Kafka<a id="key_concepts"></a>
+```bash
+nc -l 7777
+```
 
+Netcat has set up a TCP connection listening on port 7777.
 
-1. [Kafka servers](http://kafka.apache.org/documentation/#gettingStarted)
+To join this connection, open another tab on the terminal and run:
 
-    "Kafka is run as a cluster of one or more servers that can span multiple datacenters or cloud regions."  
+```bash
+nc localhost 7777
+```
 
-    Kafka brokers handle the storage layer of Kafka. This features a log based event storage. While, KafkaConnect handles the integration of other systems into Kafka. For example, KafkaConnect can ingest an entire database.
+The connection should be fully set up. Both sides are able to send and receive messages from each other. Anything sent would be echoed on the receiving side.
 
+Note: this connection can only be between two parties. At least, I could not make it work for more than two. Once a connection has been established no third client can join the connection. Even if a third nc client tries to join, it can neither receive nor send messages across the already existing connection. Any of the two parties involved in the connection can end the session. An interrupt signal would suffice to end it, Ctrl + C.
 
-2. [Kafka Clients]((http://kafka.apache.org/documentation/#gettingStarted))
+So far, we have achieved a simple Netcat communication but cannot yet send messages across computers.
 
-    Kafka is primarily about events which are ordered in topics. Topics are analogical to folders in filesystems. Clients read and write to Kafka servers through producers and consumers. The producers append (write) events to the log file operated by kafka brokers and the consumers subscribed read the events. 
+### Setting up a TCP connection across two computers using Netcat
 
-    It is worth mentioning that even though Kafka implements the publish/subscription system found in message queues or brokers like [RabbitMQ](https://www.rabbitmq.com/) or [ActiveMQ](https://activemq.apache.org/), it is not limited to that. Kafka can store messages, track events, process events and even analyse them. These are not common features of traditional queueing systems which focus solely on writing and reading stream of messages from a broker. 
-    
-Message queues usually have in-memory storage and messages are deleted once they are consumed. Therefore, Kafka's alternative would be Amazon Kinesis among other full stream processing platforms. 
+Sending messages across terminal tabs on the same machine is good but nothing exciting.
 
+Connect the two computers to a common network. An office WiFi or phone hotspot would suffice. That is, join the WiFi from the two computers.
 
-### Installation and Kafka server stat up<a id="install_kafka"></a>
+#### <a name="find_ip"></a>Find IP addresses of the two computers
 
+IP addresses of the computers would be needed since we are not messaging within `localhost` anymore.
 
-1. Download Kafka [here](https://downloads.apache.org/kafka/2.6.0/kafka_2.13-2.6.0.tgz) 
+You can find out your ip address using `ifconfig`. Usually, it is under the first ethernet network interface, i.e. en0. Look for inet and that is your ipv4 address.
 
-2. Extract kafka,  and Kafka server.
+I have a function in `.zshrc` that returns my ip each time I run the command.
 
-    ```bash
-    $ tar -xzf kafka_2.13-2.6.0.tgz
-    $ cd kafka_2.13-2.6.0
-    ```
+```bash
+ip_v4() {
+    ifconfig | grep 'inet 192' | awk '{print $2}'
+}
+```
 
-3. Run the Zookeeper
-
-    ```bash
-    $ bin/zookeeper-server-start.sh config/zookeeper.properties
-    ```
-
-4. Run Kafka server on another terminal
-
-    ```bash
-    $ bin/kafka-server-start.sh config/server.properties
-    ```
-
-
-### Setting up Kafka clients with Springboot<a id="client_setup"></a>
-
-
-1. Generate a Spring application from [here](https://start.spring.io/)
-
-2. Configure maven pom.xml file. This is what mine looks like below:
-   
-    ```xml
-    <?xml version="1.0" encoding="UTF-8"?>
-    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-      <modelVersion>4.0.0</modelVersion>
-      <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.3.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-      </parent>
-      <groupId>com.matukio</groupId>
-      <artifactId>mtihani</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <name>mtihani</name>
-      <description>Demo project for Spring Kafka</description>
-
-      <properties>
-        <java.version>14</java.version>
-      </properties>
-
-      <dependencies>
-        <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.springframework.kafka</groupId>
-          <artifactId>spring-kafka</artifactId>
-        </dependency>
-
-        <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-test</artifactId>
-          <scope>test</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>org.junit.vintage</groupId>
-              <artifactId>junit-vintage-engine</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>org.springframework.kafka</groupId>
-          <artifactId>spring-kafka-test</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-      </dependencies>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-
-    </project>
-    ```
-
-3. Set up application.properties
-    
-    ```yaml
-      server.port=8081
-      
-      # producer config
-      spring.kafka.producer.bootstrap-servers=localhost:9092
-      spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
-      spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
-      
-      # consumer config
-      spring.kafka.consumer.bootstrap-servers=localhost:9092
-      spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
-      spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
-      spring.kafka.consumer.group-id=matukio
-    ```
-    
-4. Create producer client
-
-    Producer.java
-    
-      ```java
-        package com.matukio.mtihani.service;
-
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.kafka.core.KafkaTemplate;
-        import org.springframework.stereotype.Service;
-
-        @Service
-        public class Producer {
-
-            private static final Logger logger = LoggerFactory.getLogger(Producer.class);
-
-            private static final String TOPIC = "demo";
-
-            private final KafkaTemplate<String, Object> kafkaTemplate;
-
-            @Autowired
-            public Producer(KafkaTemplate<String, Object> kafkaTemplate) {
-                this.kafkaTemplate = kafkaTemplate;
-            }
-
-            public void sendMessage(String message) {
-                logger.info("vvv::  send message");
-                kafkaTemplate.send(TOPIC, message);
-            }
-        }
-     ```
- 
-5. Create consumer client 
-        
-   Consumer.java
-        
-    ```java
-        package com.matukio.mtihani.service;
-
-        import com.fasterxml.jackson.databind.ObjectMapper;
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.kafka.annotation.KafkaListener;
-        import org.springframework.stereotype.Service;
-
-        import java.io.IOException;
-
-        @Service
-        public class Consumer {
-
-            private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
-
-            @Autowired
-            private final ObjectMapper mapper = new ObjectMapper();
-
-            @KafkaListener(topics = "demo", groupId = "matukio")
-            public void consume(String message) throws IOException {
-                logger.info("consumed message is= " + message);
-            }
-        }
-     ```
-
-6. Create a controller
-
-   MessagingController.java
-        
-   ```java
-        
-    package com.matukio.mtihani.controller;
-
-    import com.matukio.mtihani.service.Producer;
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RequestParam;
-    import org.springframework.web.bind.annotation.RestController;
-
-    @RestController
-    @RequestMapping("/messaging")
-    public class MessagingController {
-
-    private final Producer producer;
-
-    @Autowired
-    MessagingController(Producer producer) {
-        this.producer = producer;
-    }
-
-    @PostMapping(value = "/publish")
-    public void sendMessageToKafkaTopic(@RequestParam("message") String message) {
-        this.producer.sendMessage(message);
-    }
-    }
-    ```
-        
-        
-### Run the application<a id="run_project"></a>
-
-
-` mvn exec:java -Dexec.mainClass=com.matukio.mtihani.MtihaniApplication`
-
-Using curl or any other tool make a request with "message" in the body. Then, check terminal where MtihaniApplication is running for the output.
-
-        
-        
-### Conclusion<a id="conclusion"></a>  
-
-
-This post assumes that you have decided to use the SOA (Service Oriented Architecture or popularly known as microservices) for your application. It does not attempt to argue whether that is the better architecture or not. 
-
-But a quick check could be to answer the following questions below:
-
-1. Do I intend to deploy my application on several cloud zones?
-2. Do I process enough data that necessitates that I partition and replicate my database?
-3. Do I necessarily need to break and deploy my application as separate pieces. 
-
-If your answer is yes these questions, then, you might want to use an SOA. Otherwise, I think the monolith approach will save you a lot of time. 
-
-This is a basic set up and it is not ideal. The goal is to introduce the reader to kafka and how to set up kafka clients on springboot.
-
-In this set up the producer and consumer live in the same project whereas in real applications the producer and consumer would usually be in different microservices located in different machines.
+This snippet passes the output of ifconfig into `grep`. Grep is used to search for the pattern `inet 192` and the output is fed to `awk`. Awk would print the second column of the line passed to it. The output of `grep` would be a single line, that is why we do not specify line number in the `awk` script.
 
+Note: `192` is my IP first octet and would vary for different networks. You can check under `en0` in the output of `ifconfig` to see yours.
+
+By now you should have the IP addresses of the two computers ready.
+
+#### Set up a connection over the network
+
+For the sake of clarity we will refer to the computer that will listen at a TCP port as **PC1**. This is the computer where you will command Netcat to listen to a port. Supposedly, the computer we have been using thus far. The second computer to join the connection would be called **PC2**.
+
+Let us begin by doing the following on **PC1**:
+
+1. Stop any nc connection still running, Ctrl + C would do the job
+2. Open the terminal and run `nc -l 7777`. This immediately starts listening on TCP port 7777
+
+Grab **PC2** and run: `nc pc1_ip_address 7777`. Replace `ip_address` with the IP address of PC1. See [Find IP above](#find_ip).
+
+This should establish a TCP connection between the two computers and messages can now be sent across.
+
+*PC 1*
+![PC 1](pc1.png)  
+
+*PC 2*
+![PC 2](pc2.png)
+
+🎉
+
+I even sent across the screenshot I took on PC2 to PC1 with a slight modification of the commands.
+On PC2:
+
+```bash
+nc -l 7777 < screenshot.png
+```
+
+On PC1:
+
+```bash
+nc pc2_ip_address 7777 > pic.png
+```
+
+This uses *nix input redirection `<` to send in the file as STDIN and does the opposite to receive the file.
+
+I tried it several times and it behaved pretty much the same way, just works. I captured and inspected the packets using [wireshark](https://www.wireshark.org/).
+
+![networkpacket_screenshot](wireshark.png)
+
+If I am able to capture and read the messages, so, is the sysadmin guy, if I were in an office. Therefore, there is need to make this channel secured!
+
+### Setting up a secured connection
+
+1. This step is optional for those that already have an existing ssh key. If you do not have one or wish to generate another key, run this on PC1:
+
+```bash
+ssh-keygen -t rsa
+```
+
+2. Copy the ssh public key generated on PC 1 into PC 2. ssh keys are usually in `$HOME/.ssh` directory. I did this by manually sending the public key file via TCP connection. There are other conventional ways, like ssh-copy-id.
+
+    Sending public key via TCP connection:
+      i. On PC1 send in the public key file: `nc -l 7777 < ~/.ssh/test_key.pub`
+      ii. On PC2 read the public key into file: `nc pc1_ip_address 7777 > test_key.pub`
+
+3. On PC2 append the public key to the ssh authorized keys. `cat test_key.pub >> ~/.ssh/authorized_key`
+
+4. Go back to PC1 and set up SSH tunneling through a port, `ssh -L 7777:localhost:7777 PC2_UserName@pc2_ip_address -N`. Replace `pc2_ip_address` and `PC2_UserName` (username on PC2). If unsure about the username, check:  `whomai` on PC2.
+
+I ran this on PC1 to set up an ssh tunnel:
+
+```bash
+ssh -i ~/.ssh/test_key -L 7777:localhost:7777 echelon@192.168.105.152 -N
+```
+
+This should set up an ssh tunnel on PC1 localhost port 7777 to PC2 (192.168.105.152) on port 7777.
+
+It is good to end all previous nc sessions. With a secured tunnel, start a TCP port listener on PC2.
+
+```bash
+nc -l 7777
+```
+
+Join the connection on PC1:
+
+```bash
+nc localhost 7777
+```
+
+Messages sent across should now be encrypted and not readable. I captured network packets with Wireshark, inspected them and it was all gibberish as expected.
+
+Captured packets:
+![wireshark_image](wireshark1.png)
+
+Goal achieved! Messages can be sent across a secured tunnel to a second computer 🥳
+
+#### Bonus
+
+Obviously, there are so many limitations to using this as a messaging system but I have found it very handy so far. To share texs or files on the two computers I would usually use email, Slack or Google Keep. 
+
+Nonetheless, one limitation that I would like to quickly address is that the currenct public key added to authorized_keys can pretty much do anything on the second computer. It can even `rm -rf ~/*`.
+
+To limit the commands PC1 can perform on PC2 with the public key added to `authorized_keys` open `authorized_keys` on PC2.
+
+```bash
+nano ~/.ssh/authorized_keys
+```
+
+Append this before the public key you previously added:
+
+```text
+command="date",no-pty,no-agent-forwarding,no-X11-forwarding ssh-rsa [public key]
+```
+
+[public key] is where the public key begins. This means that whenever PC1 connects to PC2 the `date` command would be run, no pseudo terminal is given to PC1, no further ssh forwarding can take place from PC2, no graphical window can be opened on PC2. This command can be modified to log to a file.
+
+IBM has a good [manual](https://www.ibm.com/docs/en/zos/3.1.0?topic=daemon-format-authorized-keys-file) on authorized_keys config.
+
+*nix systems are great for tiny experiments like this. I was able to appreciate more common programmes like: `openssl`, `awk`, `nc` and `wireshark`.
