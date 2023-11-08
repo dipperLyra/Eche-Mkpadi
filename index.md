@@ -98,7 +98,7 @@ I tried it several times and it behaved pretty much the same way, just works. I 
 
 ![networkpacket_screenshot](wireshark.png)
 
-If I am able to capture and read the messages, so, is the sysadmin guy, if I were in an office. Therefore, there is need to make this channel secured!
+If I am able to capture and read the messages, so is the sysadmin guy, if I were in an office. Therefore, there is need to make this channel secured!
 
 ### Setting up a secured connection
 
