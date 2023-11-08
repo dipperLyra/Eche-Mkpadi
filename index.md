@@ -1,4 +1,4 @@
-# Summary of a Networking Date
+# A Networking Date
 
 For many, a good weekend means: rest, some adventure and family time. My adventure over the weekend was some naive chat system using Netcat (nc) and ssh. Netcat is a popular unix network tool. It is commonly used for port scanning.
 
