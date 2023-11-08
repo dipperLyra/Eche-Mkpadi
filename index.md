@@ -4,7 +4,7 @@ For many, a good weekend means: rest, some adventure and family time. My adventu
 
 The goal was to set up a naive communication tunnel between two computers.
 
-Note: this was tested only on MacBooks, macOS. Linux operating systems come with Netcat but the flags might be slightly different. I do not know if Windows come with Netcat but it is contained [cygwin](https://cygwin.com/index.html), provides core *nix packages on Windows. Booting into Ubuntu on WSL should also make it available. Windows users can recreate this on their platform however they see fit.
+Note: this was tested only on MacBooks, macOS. Linux operating systems come with Netcat but the flags might be slightly different. I do not know if Windows come with Netcat but it is contained in [cygwin](https://cygwin.com/index.html), provides core *nix packages on Windows. Booting into Ubuntu on WSL should also make it available. Windows users can recreate this on their platform however they see fit.
 
 ## Netcat
 
@@ -30,7 +30,7 @@ The connection should be fully set up. Both sides are able to send and receive m
 
 Note: this connection can only be between two parties. At least, I could not make it work for more than two. Once a connection has been established no third client can join the connection. Even if a third nc client tries to join, it can neither receive nor send messages across the already existing connection. Any of the two parties involved in the connection can end the session. An interrupt signal would suffice to end it, Ctrl + C.
 
-So far, we have achieved a simple Netcat communication but cannot yet send messages across computers.
+So far, we have achieved a simple TCP communication but cannot yet send messages across computers.
 
 ### Setting up a TCP connection across two computers using Netcat
 
@@ -52,7 +52,7 @@ ip_v4() {
 }
 ```
 
-This snippet passes the output of ifconfig into `grep`. Grep is used to search for the pattern `inet 192` and the output is fed to `awk`. Awk would print the second column of the line passed to it. The output of `grep` would be a single line, that is why we do not specify line number in the `awk` script.
+This snippet passes the output of ifconfig into `grep`. Grep is used to search for the pattern `inet 192` and the output is fed to `awk`. Awk would print the second column of the line passed to it. The output of `grep` would be a single line, that is why we did not specify line number in the `awk` script.
 
 Note: `192` is my IP first octet and would vary for different networks. You can check under `en0` in the output of `ifconfig` to see yours.
 
@@ -60,7 +60,7 @@ By now you should have the IP addresses of the two computers ready.
 
 #### Set up a connection over the network
 
-For the sake of clarity we will refer to the computer that will listen at a TCP port as **PC1**. This is the computer where you will command Netcat to listen to a port. Supposedly, the computer we have been using thus far. The second computer to join the connection would be called **PC2**.
+For the sake of clarity we will refer to the computer that will listen at a TCP port as **PC1**. This is the computer where you will command Netcat to open a TCP port and listen for connection. This is supposedly the computer we have been using thus far. The second computer to join the connection would be called **PC2**.
 
 Let us begin by doing the following on **PC1**:
 
