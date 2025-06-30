@@ -2,7 +2,7 @@
 layout: default
 title: "Why Nigerian Companies Are Ditching Bank Loans for CPs"
 description: "An article briefly discussing how Nigerian companies are pivoting to CPs for short term loans."
-image: /resources/images/cp-offering.jpeg
+image: /resources/images/cp-offering.jpg
 ---
 
 # Why Nigerian Companies Are Ditching Bank Loans for CPs
@@ -17,6 +17,6 @@ A CP is basically an IOU. A company issues this short-term debt note directly to
 
 ## Summary
 
-![available-cp-as-of-30/6/25](../resources/images/cp-offering.jpeg)
+![available-cp-as-of-30/6/25](../resources/images/cp-offering.jpg)
 
 In summary, the CBN's high MPR and CRR rates have created a problem for corporate financing. The private sector's solution has been a pivot to the CP market. This is making the debt market more dynamic, but it also raises the question of what happens when all this short-term debt needs to be repaid. It’s a trend worth watching.
