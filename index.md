@@ -4,7 +4,9 @@ A Backend Engineer at Moniepoint. Welcome to my blog. This is the home for all m
 
 ## Posts
 
-### [Why Nigerian Companies Are Ditching Bank Loans for CPs](./posts/ng-commercial-papers.mdd)
+### [Why Nigerian Companies Are Ditching Bank Loans for CPs](./posts/ng-commercial-papers.md)
+
+If you've been following the Nigerian business scene, you've probably noticed companies are getting creative with how they raise money. It’s not just for fun; the Central Bank of Nigeria (CBN) has made the usual route—bank loans—a tough and expensive puzzle to solve. When things get difficult, you start looking for a fix.
 
 ### [A Billion Loop Iterations in Java, Js, Go and Python](./posts/one-billion-iterations.md)
 
