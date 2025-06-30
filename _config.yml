@@ -7,7 +7,7 @@ plugins:
 markdown: kramdown
 
 title: Eche Mkpadi
-description: Publish my digital interests
+description: "A digital enthusiast exploring the world of technology, finance, and development."
 url: https://eche.com.ng
 
 # Default Metadata for Open Graph and Twitter Card
