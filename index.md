@@ -4,6 +4,8 @@ A Backend Engineer at Moniepoint. Welcome to my blog. This is the home for all m
 
 ## Posts
 
+### [Why Nigerian Companies Are Ditching Bank Loans for CPs](./posts/ng-commercial-papers.mdd)
+
 ### [A Billion Loop Iterations in Java, Js, Go and Python](./posts/one-billion-iterations.md)
 
 I saw this thread on twitter where a guy tested the speed of 1 billion loop iterations in these four languages: JavaScript, Python, Go and C.
