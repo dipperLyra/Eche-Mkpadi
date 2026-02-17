@@ -1,8 +1,14 @@
-# Hello!
+# Hello
 
 A Backend Engineer at Moniepoint. Welcome to my blog. This is the home for all my findings on everything computer and network related.
 
 ## Posts
+
+### [Parameterized Testing: How I Reduced Test Code by ~50% Without Losing Coverage](./posts/parameterized-testing-refactor.md)
+
+Agents have made code production cheap and formal verification even more important. A lot of tests are needed to validate that business logic, edges cases and application flow are highly deterministic. The more tests the merrier but there is a catch. A point can be reached where the tests files become a dump site that only agents can wade through. This is not desirable for many applications and least desirable in Finance where flow must be deterministic and unknowns reduced to minimum.
+
+*Published on 17th February. Last edited on 17th February.*
 
 ### [Why Nigerian Companies Are Ditching Bank Loans for CPs](./posts/ng-commercial-papers.md)
 
