@@ -213,7 +213,6 @@ static Stream<Arguments> standardDeclineScenarios() {
 | Lines of code | ~600       | ~374  |
 | Mock setup    | Every test | Once  |
 
-
 ### TxDeclinedNtProcessorTest
 
 | Metric        | Before     | After |
@@ -221,7 +220,6 @@ static Stream<Arguments> standardDeclineScenarios() {
 | Test methods  | 35         | 13    |
 | Lines of code | ~750       | ~476  |
 | Mock setup    | Every test | Once  |
-
 
 ### Combined
 
