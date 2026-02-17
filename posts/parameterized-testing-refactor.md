@@ -162,7 +162,7 @@ It became very easy to see *what mattered* in each test.
 
 ### 3. Parameterized Tests
 
-When I started researching on how to reduce the test files there were other things like breaking up the test files into multiple files, making a test data factory but returned the biggest win. You write a single test, create a table of values with expected outcome. It was truly a breadth of fresh air to learn how to use Parameterized testing.
+When I started researching on how to reduce the test files there were other things like breaking up the test files into multiple files, making a test data factory but this returned the biggest win. You write a single test, create a table of values with expected outcome. It was truly a breadth of fresh air to learn how to use Parameterized testing.
 
 All those “same logic, different data” tests collapsed into **one test + a data table**.
 
@@ -205,29 +205,23 @@ static Stream<Arguments> standardDeclineScenarios() {
 
 ## The Results
 
-### TransactionApprovedNotificationProcessorTest
+### TxApprovedNtProcessorTest
 
-+---------------+------------+-------+
 | Metric        | Before     | After |
-+---------------+------------+-------+
+|---------------|--------    |-------|
 | Test methods  | 26         | 13    |
-+---------------+------------+-------+
 | Lines of code | ~600       | ~374  |
-+---------------+------------+-------+
 | Mock setup    | Every test | Once  |
-+---------------+------------+-------+
 
-### TransactionDeclinedNotificationProcessorTest
 
-+---------------+------------+-------+
+### TxDeclinedNtProcessorTest
+
 | Metric        | Before     | After |
-+---------------+------------+-------+
+|---------------|--------    |-------|
 | Test methods  | 35         | 13    |
-+---------------+------------+-------+
 | Lines of code | ~750       | ~476  |
-+---------------+------------+-------+
 | Mock setup    | Every test | Once  |
-+---------------+------------+-------+
+
 
 ### Combined
 
@@ -254,7 +248,7 @@ Before this refactor, finding a specific test felt like mining. Afterwards, it f
 > “What happens when insufficient funds + international currency?”  
 > → It’s one row in a table.
 
-Parameterized tests didn’t just reduce code, it made the tests clearer. I might end up overusing it this coming days.
+Parameterized tests didn’t just reduce code, it made the tests clearer. I might end up overusing it in the coming days 😹
 
 That alone was worth the refactor.
 
