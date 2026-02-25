@@ -18,6 +18,7 @@ layout: default
     <meta property="og:type" content="article">
 
     <link rel="stylesheet" type="text/css" media="screen" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
   </head>
 
   <body>
@@ -31,6 +32,9 @@ layout: default
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+        {% unless page.url == "/" %}
+        <p class="breadcrumb"><a href="/">&larr; Home</a></p>
+        {% endunless %}
         {{ content }}
       </section>
     </div>
@@ -39,7 +43,7 @@ layout: default
 
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p>&copy; {{ "now" | date: "%Y" }}</p>
+        <p>&copy; {{ "now" | date: "%Y" }} | <a href="https://www.linkedin.com/in/eche-mkpadi-a2969b108/">LinkedIn</a></p>
       </footer>
     </div>
     <!-- GoatCounter Analytics -->

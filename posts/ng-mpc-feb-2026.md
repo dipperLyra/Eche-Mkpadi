@@ -7,6 +7,8 @@ image: /resources/mpc_022026.png
 
 # The CBN Just Cut Interest Rates — Here's What It Means
 
+*Published on 25th February 2026.*
+
 If you've been getting messages asking "what does the MPC decision mean?", this is the guide you can forward.
 
 On Tuesday, February 24, 2026, the Central Bank of Nigeria (CBN) held its 304th Monetary Policy Committee (MPC) meeting and, decided to **reduce** the Monetary Policy Rate (MPR) by 50 basis points, bringing it down from 27% to **26.5%**. Some Analysts and Fund Managers like Meristem had speculated a cut of 100bps given how much inflation numbers have come down. But the CBN Governor has emphasised that the watchword of the CBN remains caution. Therefore, they would cut slowly while monitoring liquidity in the system. The Governor also emphasised, that they remain very concerned about the traditional pre-election spending that spikes liquidity in the system.

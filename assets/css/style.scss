@@ -1,0 +1,27 @@
+---
+---
+
+@import "jekyll-theme-slate";
+
+/* Back-to-home breadcrumb */
+.breadcrumb {
+  margin-bottom: 1.5em;
+  font-size: 0.9em;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: #4276b6;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Make tables scroll horizontally on mobile */
+#main_content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
