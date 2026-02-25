@@ -4,6 +4,12 @@ A Backend Engineer at Moniepoint. Welcome to my blog. This is the home for all m
 
 ## Posts
 
+### [The CBN Just Cut Interest Rates — Here's What It Means](./posts/ng-mpc-feb-2026.md)
+
+If you've been getting messages asking "what does the MPC decision mean?", this is the guide you can forward. The CBN held its 304th MPC meeting and decided to reduce the MPR by 50 basis points, bringing it down from 27% to 26.5%.
+
+*Published on 25th February 2026.*
+
 ### [Parameterized Testing: How I Reduced Test Code by ~50% Without Losing Coverage](./posts/parameterized-testing-refactor.md)
 
 Agents have made code production cheap and formal verification even more important. A lot of tests are needed to validate that business logic, edges cases and application flow are highly deterministic. The more tests the merrier but there is a catch. A point can be reached where the tests files become a dump site that only agents can wade through. This is not desirable for many applications and least desirable in Finance where flow must be deterministic and unknowns reduced to minimum.
